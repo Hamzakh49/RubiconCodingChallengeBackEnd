@@ -1,9 +1,9 @@
-const ProjectModel = require("../models/project.model");
+const TaskModel = require("../models/task.model");
 
 module.exports = {
   get: async (req, res) => {
     try {
-      const data = await ProjectModel.find();
+      const data = await TaskModel.find();
     } catch (err) {
       console.log(err);
       return res.send("Error server ...");
@@ -13,7 +13,7 @@ module.exports = {
   getOne: async (req, res) => {
     const { id } = req.params;
     try {
-      const data = await ProjectModel.findById(id);
+      const data = await TaskModel.findById(id);
       return res.send(data);
     } catch (err) {
       console.log(err);
@@ -21,7 +21,7 @@ module.exports = {
     }
   },
   add: async (req, res) => {
-    const { label, description, statut, starting_date, ending_date } = req.body;
+    const { label, description, starting_date, ending_date, project_id } = req.body;
     try {
       if (!label) {
         return res.send("Label is empty!");
@@ -31,35 +31,32 @@ module.exports = {
         return res.send("Starting date is empty!");
       } else if (!ending_date) {
         return res.send("Ending date is empty!");
+      }else if(!project_id){
+        return res.send("Project date is empty!");
       }
-      const data = await ProjectModel.create({
+      const data = await TaskModel.create({
         label,
         description,
         statut,
         starting_date,
         ending_date,
       });
-      return res.status(200).send({
-        success: true,
-        message: "Project created successfully!",
-      });
+      return res.send("Project created successfully!");
     } catch (err) {
       console.log(err);
-      return res.status(400).send({
-        success: false,
-        message: "Error server ...",
-      });
+      return res.send("Error server ...");
     }
   },
   update: async (req, res) => {
-    const { label, description, statut, starting_date, ending_date } = req.body;
+    const { label, description, statut, starting_date, ending_date, project_id } = req.body;
     try {
-      const data = await ProjectModel.findByIdAndUpdate(req.params.id, {
+      const data = await TaskModel.findByIdAndUpdate(req.params.id, {
         label,
         description,
         statut,
         starting_date,
         ending_date,
+        project_id
       });
       return res.send("Project updated successfully");
     } catch (err) {
@@ -68,7 +65,7 @@ module.exports = {
   },
   delete: async (req, res) => {
     try {
-      const data = await ProjectModel.deleteOne({ _id: req.params.id });
+      const data = await TaskModel.deleteOne({ _id: req.params.id });
       return res.send("Project deleted successfully");
     } catch (err) {
       return res.send("Error server...");
