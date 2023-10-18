@@ -4,20 +4,35 @@ module.exports = {
   get: async (req, res) => {
     try {
       const data = await ProjectModel.find();
+      // return res.send(data);
+      return res.status(200).send({
+        success: true,
+        message: "Data fetched successfully!",
+        data: data,
+      });
     } catch (err) {
       console.log(err);
-      return res.send("Error server ...");
+      return res.status(400).send({
+        success: false,
+        message: "Error server ...",
+      });
     }
-    return res.send(data);
   },
   getOne: async (req, res) => {
     const { id } = req.params;
     try {
       const data = await ProjectModel.findById(id);
-      return res.send(data);
+      return res.status(200).send({
+        success: true,
+        message: "Data fetched successfully!",
+        data: data,
+      });
     } catch (err) {
       console.log(err);
-      return res.send("Error server ...");
+      return res.status(400).send({
+        success: false,
+        message: "Error server ...",
+      });
     }
   },
   add: async (req, res) => {
@@ -52,26 +67,37 @@ module.exports = {
     }
   },
   update: async (req, res) => {
-    const { label, description, statut, starting_date, ending_date } = req.body;
+    const { label, description, starting_date, ending_date } = req.body;
     try {
       const data = await ProjectModel.findByIdAndUpdate(req.params.id, {
         label,
         description,
-        statut,
         starting_date,
         ending_date,
       });
-      return res.send("Project updated successfully");
+      return res.status(200).send({
+        success: true,
+        message: "Project updated successfully!",
+      });
     } catch (err) {
-      return res.send("Error server...");
+      return res.status(400).send({
+        success: false,
+        message: "Error server ...",
+      });
     }
   },
   delete: async (req, res) => {
     try {
       const data = await ProjectModel.deleteOne({ _id: req.params.id });
-      return res.send("Project deleted successfully");
+      return res.status(200).send({
+        success: true,
+        message: "Project deleted successfully!",
+      });
     } catch (err) {
-      return res.send("Error server...");
+      return res.status(400).send({
+        success: false,
+        message: "Error server ...",
+      });
     }
   },
 };

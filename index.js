@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const ProjectModel = require("./models/project.model");
 const TaskModel = require("./models/task.model");
 const projectRoutes = require("./routes/project.routes");
+const taskRoutes = require("./routes/task.routes");
 const cors = require("cors");
 
 const app = express();
@@ -12,7 +13,8 @@ app.use(cors());
 
 mongoose
   .connect(
-    "mongodb+srv://hamza981:hamza981@cluster0.wthkbhr.mongodb.net/RubiCon?retryWrites=true&w=majority",
+    "mongodb://127.0.0.1:27017/Rubicon",
+    // "mongodb+srv://hamza981:hamza981@cluster0.wthkbhr.mongodb.net/RubiCon?retryWrites=true&w=majority",
     { useNewUrlParser: true }
   )
   .then(() => {
@@ -26,20 +28,20 @@ mongoose
     console.log("Couldn't connect to MongoDB");
   });
 
-
 app.use("/project", projectRoutes);
+app.use("/task", taskRoutes);
 
-app.post("/add-task", async (req, res) => {
-  const { label, description, starting_date, ending_date, project } = req.body;
-  const data = await TaskModel.create({
-    label,
-    description,
-    starting_date,
-    ending_date,
-    project: new mongoose.Types.ObjectId(project),
-  });
-  res.send("Task created successfully!");
-});
+// app.post("/add-task", async (req, res) => {
+//   const { label, description, starting_date, ending_date, project } = req.body;
+//   const data = await TaskModel.create({
+//     label,
+//     description,
+//     starting_date,
+//     ending_date,
+//     project: new mongoose.Types.ObjectId(project),
+//   });
+//   res.send("Task created successfully!");
+// });
 
 const port = process.env.PORT || 4000;
 
