@@ -36,7 +36,7 @@ module.exports = {
     }
   },
   add: async (req, res) => {
-    const { label, description, starting_date, ending_date, project, statut } =
+    const { label, description, starting_date, ending_date, project } =
       req.body;
     try {
       if (!label) {
@@ -53,7 +53,6 @@ module.exports = {
       const data = await TaskModel.create({
         label,
         description,
-        statut,
         starting_date,
         ending_date,
         project,
@@ -73,7 +72,7 @@ module.exports = {
     }
   },
   update: async (req, res) => {
-    const { label, description, starting_date, ending_date, project_id } =
+    const { label, description, starting_date, ending_date, project } =
       req.body;
     try {
       const data = await TaskModel.findByIdAndUpdate(req.params.id, {
@@ -81,13 +80,15 @@ module.exports = {
         description,
         starting_date,
         ending_date,
-        project_id,
+        project,
       });
-      data.project = await ProjectModel.findById(data.project);
+      const dataValues = await TaskModel.findById(req.params.id).populate(
+        "project"
+      );
       return res.status(200).send({
         success: true,
         message: "Task updated successfully!",
-        data: data
+        data: dataValues,
       });
     } catch (err) {
       console.log(err);

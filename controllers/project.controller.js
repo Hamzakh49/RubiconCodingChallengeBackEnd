@@ -47,7 +47,7 @@ module.exports = {
       return res.status(200).send({
         success: true,
         message: "Project created successfully!",
-        data: data
+        data: data,
       });
     } catch (err) {
       console.log(err);
@@ -66,9 +66,11 @@ module.exports = {
         starting_date,
         ending_date,
       });
+      const dataValues = await ProjectModel.findById(req.params.id);
       return res.status(200).send({
         success: true,
         message: "Project updated successfully!",
+        data: dataValues,
       });
     } catch (err) {
       console.log(err);

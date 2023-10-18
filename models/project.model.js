@@ -5,7 +5,6 @@ const projectSchema = new Schema(
   {
     label: String,
     description: String,
-    statut: String,
     starting_date: String,
     ending_date: String,
   },

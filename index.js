@@ -11,11 +11,7 @@ app.use(express.json());
 app.use(cors());
 
 mongoose
-  .connect(
-    // "mongodb://127.0.0.1:27017/Rubicon",
-    process.env.DATABASE,
-    { useNewUrlParser: true }
-  )
+  .connect(process.env.DATABASE, { useNewUrlParser: true })
   .then(() => {
     console.log("Connected to MongoDB");
   })
