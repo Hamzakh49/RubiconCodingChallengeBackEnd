@@ -36,27 +36,18 @@ module.exports = {
     }
   },
   add: async (req, res) => {
-    const { label, description, statut, starting_date, ending_date } = req.body;
+    const { label, description, starting_date, ending_date } = req.body;
     try {
-      if (!label) {
-        return res.send("Label is empty!");
-      } else if (!description) {
-        return res.send("Description is empty!");
-      } else if (!starting_date) {
-        return res.send("Starting date is empty!");
-      } else if (!ending_date) {
-        return res.send("Ending date is empty!");
-      }
       const data = await ProjectModel.create({
         label,
         description,
-        statut,
         starting_date,
         ending_date,
       });
       return res.status(200).send({
         success: true,
         message: "Project created successfully!",
+        data: data
       });
     } catch (err) {
       console.log(err);
@@ -80,6 +71,7 @@ module.exports = {
         message: "Project updated successfully!",
       });
     } catch (err) {
+      console.log(err);
       return res.status(400).send({
         success: false,
         message: "Error server ...",
